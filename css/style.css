@@ -502,6 +502,9 @@ img.img-circle.team-img {
   -o-transform: scale(1.3);
   transform: scale(1.3);
 }
+#services a {
+  color: #aaa;
+}
 /* Gallery Section 
 ============================== */
 #works {
