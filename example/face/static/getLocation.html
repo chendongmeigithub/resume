@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天地图</title>
+</head>
+<body style="position:absolute;width:100%; height:100%;overflow: hidden;margin: 0">
+    <div id="mapDiv" style="position:absolute;width:100%; height:100%;">
+    </div>
+    <script src="http://api.tianditu.com/js/maps.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.tianditu.com/js/maptools.js"></script>
+    <script>
+        var map;
+        var zoom = 15;
+        var pickup;
+        function drawMap(data) {
+          //初始化地图对象
+          map=new TMap("mapDiv");
+          //设置显示地图的中心点和级别
+          if(data===undefined||(data.lng === "")||(data.lat === '')||(typeof data.lng === "undefined")||(typeof data.lat === "undefined")){
+
+            map.centerAndZoom(new TLngLat(120.746449,31.254611),zoom);
+            //创建标注对象
+            var marker = new TMarker(new TLngLat(120.746449,31.254611));
+            //向地图上添加标注
+            map.addOverLay(marker);
+          }else{
+            map.centerAndZoom(new TLngLat(data.lng, data.lat),zoom);
+
+            //创建标注对象
+            var marker = new TMarker(new TLngLat(data.lng, data.lat));
+            //向地图上添加标注
+            map.addOverLay(marker);
+          }
+
+          map.enableHandleMouseScroll();
+          //启用连续缩放效果
+          map.enableContinuousZoom();
+
+          var config = {
+            callback: getLngLat
+          };
+          pickup = new TCoordinatePickup(map,config);
+          pickup.addEvent();
+        }
+
+        // 获取经纬度
+        function getLngLat(lnglat) {
+            // 清除所有标注
+            for (var i = 0; i < map.getOverlays().length; i++) {
+                map.removeOverLay(map.getOverlays()[i]);
+            }
+            var obj = {
+                lng: lnglat.getLng(),
+                lat: lnglat.getLat()
+            };
+            //创建标注对象
+            var marker = new TMarker(new TLngLat(obj.lng,obj.lat));
+            //向地图上添加标注
+            map.addOverLay(marker);
+            localStorage.setItem('positionInfo', JSON.stringify(obj));
+        }
+    </script>
+</body>
+</html>
+

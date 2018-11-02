@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>青海天纵科技企业</title>
+    <link href="css/index.css" type="text/css" rel="stylesheet"/>
+    <style>
+        /*解决方案动画*/
+        .animation-layer .cont .one {
+            opacity: 0;
+            margin-left: -30px;
+        }
+        .animation-layer.animation-active .cont .one {
+            opacity: 1;
+            margin-left: 0px;
+            transition: width 1s, margin-left 1s, opacity 1s;
+            transition-delay: 0s;
+        }
+        .animation-layer .cont .two {
+            opacity: 0;
+            margin-right: -30px;
+        }
+        .animation-layer.animation-active .cont .two {
+            opacity: 1;
+            margin-right: 0px;
+            transition: width 1s, margin-right 1s, opacity 1s;
+            transition-delay: 1s;
+        }
+        .animation-layer .cont .three {
+            opacity: 0;
+            margin-right: -30px;
+        }
+        .animation-layer.animation-active .cont .three {
+            opacity: 1;
+            margin-right: 0px;
+            transition: width 1s, margin-right 1s, opacity 1s;
+            transition-delay: 2s;
+        }
+
+        /*应用场景*/
+        .application .cont dl dt a .f1{
+            display: none;
+        }
+        .application .cont dl dt a:hover .f2{
+            display: none;
+        }
+        .application .cont dl dt a:hover .f1{
+            display: inherit;
+        }
+        /*加盟*/
+        .joinus .cont {
+            position: relative;
+        }
+        .animation-layer.joinus .cont .joinus-1 {
+            position: absolute;
+            top: 265px;
+            left: 0px;
+            opacity: 0;
+        }
+        .animation-layer.joinus .cont .joinus-2 {
+            position: absolute;
+            top: 83px;
+            left: 0px;
+            opacity: 0;
+        }
+        .animation-layer.joinus .cont .joinus-3 {
+            position: absolute;
+            top: 326px;
+            left: 0px;
+            opacity: 0;
+        }
+        .animation-layer.joinus .cont .joinus-4 {
+            position: absolute;
+            top: 11px;
+            left: 0px;
+            opacity: 0;
+        }
+        .animation-layer.joinus .cont .joinus-5 {
+            position: absolute;
+            top: 233px;
+            left: 0px;
+            opacity: 0;
+        }
+        .animation-layer.joinus.animation-active .cont .joinus-1 {
+            opacity: 1;
+            left: 74px;
+            transition: left 1s, opacity 1s;
+            transition-delay: 0s;
+        }
+        .animation-layer.joinus.animation-active .cont .joinus-2 {
+            opacity: 1;
+            left: 315px;
+            transition: left 1s, opacity 1s;
+            transition-delay: 1s;
+        }
+        .animation-layer.joinus.animation-active .cont .joinus-3 {
+            opacity: 1;
+            left: 468px;
+            transition: left 1s, opacity 1s;
+            transition-delay: 2s;
+        }
+        .animation-layer.joinus.animation-active .cont .joinus-4 {
+            opacity: 1;
+            left: 662px;
+            transition: left 1s, opacity 1s;
+            transition-delay: 3s;
+        }
+        .animation-layer.joinus.animation-active .cont .joinus-5 {
+            opacity: 1;
+            left: 803px;
+            transition: left 1s, opacity 1s;
+            transition-delay: 4s;
+        }
+        /*关于我们*/
+        .aboutus.animation-layer .cont {
+            position: relative;
+        }
+        .aboutus.animation-layer .cont .aboutus-img{
+            position: absolute;
+            left: -30px;
+            top: 0;
+            opacity: 0;
+        }
+        .aboutus.animation-layer .cont .aboutus-con{
+            position: absolute;
+            right: -30px;
+            top: 0;
+            opacity: 0;
+        }
+        .aboutus.animation-layer.animation-active .cont .aboutus-img{
+            opacity: 1;
+            left: 0px;
+            transition: left 1s, opacity 1s;
+        }
+        .aboutus.animation-layer.animation-active .cont .aboutus-con{
+            opacity: 1;
+            right: 100px;
+            transition: right 1s, opacity 1s;
+        }
+    </style>
+    <script type="text/javascript" src="css/jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+<div class="topbox">
+    <div class="TopInner">
+        <div class="fl">欢迎光临青海天纵科技企业</div>
+        <div class="fr"><span class="phone">电话：0971-22122311</span><span class="tel">手机：13321223112</span><span
+                class="mail">邮箱：*****@qq.com</span></div>
+    </div>
+</div>
+<!--topbox end -->
+<div class="topHeader">
+    <div class="wrapbox">
+        <div class="logo"></div>
+        <div class="menu">
+            <a href="#banner" target="_self" class="cur">首页</a><a href="#solution" target="_self">解决方案</a><a href="#product"
+                                                                                                             target="_self">产品中心</a><a
+                href="#application" target="_self">应用场景</a><a href="#joinus" target="_self">合作加盟</a><a href="#aboutus"
+                                                                                                       target="_self">关于我们</a>
+        </div>
+    </div>
+</div>
+
+<!--wrapbox LOGO -->
+<div class="banner" id="banner"></div>
+<div class="main">
+    <div class="wrapbox solution animation-layer" id="solution">
+        <div class="tit"></div>
+        <div class="cont">
+            <div class="cont_fl">
+                <dl class="one">
+                    <dt>再生资源公共信息服务平台</dt>
+                    <dd>再生资源公共信息服务平台的作用是什么，再生资源公共信息服务平台的作用是什么</dd>
+                </dl>
+            </div>
+            <div class="cont_fr">
+                <dl class="two">
+                    <dt>智慧云回收体系</dt>
+                    <dd>再生资源公共信息服务平台的作用是什么，再生资源公共信息服务平台的作用是什么</dd>
+                </dl>
+                <dl class="three">
+                    <dt>智慧垃圾分类</dt>
+                    <dd>再生资源公共信息服务平台的作用是什么，再生资源公共信息服务平台的作用是什么</dd>
+                </dl>
+            </div>
+        </div>
+        <!-- cont end-->
+    </div>
+    <!--solution解决方案 -->
+    <div class="height20"></div>
+    <div class="height20"></div>
+    <div class="product animation-layer" id="product">
+        <div class="tit"></div>
+        <div class="cont">
+            <div class="imgbox">
+                <div class="img">
+                    <div class="inner">
+                        <div><img src="images/cp (1).jpg"/></div>
+                        <div><img src="images/cp (1).jpg"/></div>
+                        </a>
+                    </div>
+                </div>
+                <p class="title"><a href="#" target="_blank">智慧垃圾筒</a></p>
+            </div>
+            <div class="imgbox">
+                <div class="img">
+                    <div class="inner">
+                        <div><img src="images/cp (2).jpg"/></div>
+                        <div><img src="images/cp (2).jpg"/></div>
+                        </a>
+                    </div>
+                </div>
+                <p class="title"><a href="#" target="_blank">智慧垃圾筒</a></p>
+            </div>
+            <div class="imgbox">
+                <div class="img">
+                    <div class="inner">
+                        <div><img src="images/cp (3).jpg"/></div>
+                        <div><img src="images/cp (3).jpg"/></div>
+                        </a>
+                    </div>
+                </div>
+                <p class="title"><a href="#" target="_blank">智慧垃圾筒</a></p>
+            </div>
+            <div class="imgbox">
+                <div class="img">
+                    <div class="inner">
+                        <div><img src="images/cp (1).jpg"/></div>
+                        <div><img src="images/cp (1).jpg"/></div>
+                        </a>
+                    </div>
+                </div>
+                <p class="title"><a href="#" target="_blank">智慧垃圾筒</a></p>
+            </div>
+            <div class="imgbox">
+                <div class="img">
+                    <div class="inner">
+                        <div><img src="images/cp (2).jpg"/></div>
+                        <div><img src="images/cp (2).jpg"/></div>
+                        </a>
+                    </div>
+                </div>
+                <p class="title"><a href="#" target="_blank">智慧垃圾筒</a></p>
+            </div>
+            <div class="imgbox">
+                <div class="img">
+                    <div class="inner">
+                        <div><img src="images/cp (3).jpg"/></div>
+                        <div><img src="images/cp (3).jpg"/></div>
+                        </a>
+                    </div>
+                </div>
+                <p class="title"><a href="#" target="_blank">智慧垃圾筒</a></p>
+            </div>
+        </div>
+        <!--cont end -->
+        <div class="height20"></div>
+        <div class="more"><a href="" target="_blank"><img src="images/more.gif"/></a></div>
+    </div>
+    <!--product 产品中心 -->
+    <div class="height20"></div>
+    <div class="height20"></div>
+    <div class="application animation-layer" id="application">
+        <div class="tit"></div>
+        <div class="cont">
+            <dl>
+                <dt><a href="" target="_blank">
+                    <img class="f2" src="images/yycj1.png"/>
+                    <img class="f1" src="images/yycj1-1.png"/>
+                </a></dt>
+                <dd>社区</dd>
+            </dl>
+            <dl>
+                <dt><a href="" target="_blank">
+                    <img class="f2"  src="images/yycj2.png"/>
+                    <img class="f1" src="images/yycj2-2.png"/>
+                </a></dt>
+                <dd>学校</dd>
+            </dl>
+            <dl>
+                <dt><a href="" target="_blank">
+                    <img  class="f2" src="images/yycj3.png"/>
+                    <img class="f1" src="images/yycj3-3.png"/>
+                </a></dt>
+                <dd>机关</dd>
+            </dl>
+            <dl>
+                <dt><a href="" target="_blank">
+                    <img class="f2" src="images/yycj4.png"/>
+                    <img class="f1" src="images/yycj4-4.png"/>
+                </a></dt>
+                <dd>园区</dd>
+            </dl>
+            <dl>
+                <dt><a href="" target="_blank">
+                    <img class="f2"  src="images/yycj5.png"/>
+                    <img class="f1" src="images/yycj5-5.png"/>
+                </a></dt>
+                <dd>商场</dd>
+            </dl>
+        </div>
+        <!-- cont-->
+    </div>
+    <!--Application 应用场景  -->
+    <div class="height20"></div>
+    <div class="height20"></div>
+
+    <div class="aboutus animation-layer" id="aboutus">
+        <div class="tit"></div>
+        <div class="cont">
+            <dl>
+                <dt class="aboutus-img"><img src="images/gywm.jpg"/></dt>
+                <dd class="aboutus-con">上海XXXXXX成立于2000年，员工XXX人。本公司配有电工、焊工、高空作业等技术工作人员。长期上门回
+                    收各 种家用电器、中央空调、机械设备、酒店设备、厨房设备、办公设备、办公家具、家用家具、塑料制品、
+                    金属物资、拆迁建筑废料等。价格合理、信守承诺、现金交 易、安全快捷、服务热情,并严格为客户保密。欢迎
+                    有废旧物资的单位及个人联系洽谈回收事宜。
+
+                    　 　公司凭借雄厚的经济实力，恪守诚信为本的原则，在长期的经营活动中以良好的商业信誉赢得了众多客户
+                    的信赖，并在业界获得良好的口碑。长期以来，我们与国 内的工矿企业、机关单位、医院、学校、宾馆、写字
+                    楼、科研院所建立了稳固的合作关系,随着业务的不断发展和壮大，合作伙伴的范围也将进一步扩大。
+                </dd>
+            </dl>
+        </div>
+        <!-- cont-->
+        <div class="more"><a href="" target="_blank"><img src="images/more.gif"/></a></div>
+    </div>
+    <!--aboutus 关于我们  -->
+
+    <div class="height20"></div>
+    <div class="height20"></div>
+    <div class="joinus animation-layer" id="joinus">
+        <div class="tit"></div>
+        <div class="cont">
+            <img src="images/joinus-1.png" alt="" class="joinus-1" />
+            <img src="images/joinus-2.png" alt="" class="joinus-2" />
+            <img src="images/joinus-3.png" alt="" class="joinus-3" />
+            <img src="images/joinus-4.png" alt="" class="joinus-4" />
+            <img src="images/joinus-5.png" alt="" class="joinus-5" />
+        </div>
+        <!-- cont-->
+    </div>
+    <!--joinus 关于我们  -->
+
+    <div class="height20"></div>
+    <div class="height20"></div>
+    <div class="foot">
+        <div class="wrapbox">
+            <div class="fl">
+                <p>公司名称：青海天纵科技有限公司</p>
+                <p>公司地址：青海省西宁市城北区</p>
+                <p>联系电话：0971-22938211</p>
+                <p>邮箱：1111@qq.com</p>
+            </div>
+            <div class="fr"><img src="images/ewm.jpg"/></div>
+        </div>
+        <div class="copyright">Copyright © 2017-2018,www.xxxxx.com,All rights reserved版权所有 © 您的网站名称 Powered by</div>
+    </div>
+    <!--foot end -->
+</div>
+<!--main end -->
+<script type="text/javascript">
+    $(".img").mouseenter(function () {
+        var $this = $(this);
+        var $div = $this.find(".inner div");
+        $div.eq(1).stop();
+        $div.eq(1).css({"top": "0px", "left": "0px", "width": "360px", "height": "300px"});
+        $div.eq(0).stop().animate({
+            "top": "-25px",
+            "left": "-25px",
+            "width": "410px",
+            "height": "350px",
+            "opacity": "0"
+        }, 500);
+        $div.eq(1).stop().animate({
+            "top": "-25px",
+            "left": "-25px",
+            "width": "410px",
+            "height": "350px",
+            "opacity": "1"
+        }, 500);
+    }).mouseleave(function () {
+        var $this = $(this);
+        var $div = $this.find(".inner div");
+        $div.eq(0).stop().animate({"top": "0", "left": "0", "width": "360px", "height": "300px", "opacity": "1"}, 500);
+        $div.eq(1).stop().animate({"top": "0", "left": "0", "width": "360px", "height": "300px", "opacity": "0"}, 500);
+    });
+    $(function () {
+        $(".animation-layer").mouseover(function () {
+            $(this).addClass("animation-active");
+        });
+    });
+</script>
+</body>
+</html>

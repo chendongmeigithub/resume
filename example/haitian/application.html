@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>青海天纵科技企业-应用场景</title>
+    <link href="css/index.css" type="text/css" rel="stylesheet"/>
+    <style>
+ 
+        /*应用场景 列表页*/
+        .application_list.animation-layer .cont {
+            position: relative;
+        }
+        .application_list.animation-layer .cont .application_list-img{
+            position: absolute;
+            left: -30px;
+            top: 0;
+            opacity: 0;
+        }
+        .application_list.animation-layer .cont .application_list-tit{
+            position: absolute;
+            right: -30px;
+            top:0;
+            opacity: 0;
+        }
+        .application_list.animation-layer .cont .application_list-con{
+            position: absolute;
+            right: -30px;
+            top:40px;
+            opacity: 0;
+        }
+        .application_list.animation-layer.animation-active .cont .application_list-img{
+            opacity: 1;
+            left: 0px;
+            transition: left 1s, opacity 1s;
+        }
+        .application_list.animation-layer.animation-active .cont .application_list-tit{
+            opacity: 1;
+            top:0;
+            right: 100px;
+            transition: right 1s, opacity 1s;
+        }
+        .application_list.animation-layer.animation-active .cont .application_list-con{
+            opacity: 1;
+			top:40px;
+            right: 100px;
+            transition: right 1s, opacity 1s;
+        }
+
+        .product{  position: relative;width: 550px;height: 550px;  overflow: hidden;  }
+        .product .product-img {
+            position: relative;
+            width: 550px;
+            height: 550px;
+        }
+        .product .product-img img {
+            position: relative;
+            width: 550px;
+            height: 550px;
+            margin-top: 0px;
+            margin-left: 0px;
+            transition: width 0.5s, height 0.5s, margin-top 0.5s, margin-left 0.5s;
+        }
+        .product:hover .product-img img {
+            width: 600px;
+            height: 600px;
+            margin-top: -50px;
+            margin-left: -50px;
+        }
+        .product .product-hover {
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            bottom: -550px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 100;
+            transition: bottom 0.5s;
+            color: #ffffff;
+        }
+        .product:hover .product-hover {
+            bottom: 0px;
+        }
+        .product .product-hover .title {
+            font-size: 18px;
+            line-height: 50px;
+            text-align: center;
+        }
+        .product .product-hover .con {
+            font-size: 16px;
+            line-height: 28px;
+            padding: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="css/jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+<div class="topbox">
+    <div class="TopInner">
+        <div class="fl">欢迎光临青海天纵科技企业</div>
+        <div class="fr"><span class="phone">电话：0971-22122311</span><span class="tel">手机：13321223112</span><span
+                class="mail">邮箱：*****@qq.com</span></div>
+    </div>
+</div>
+<!--topbox end -->
+<div class="topHeader">
+    <div class="wrapbox">
+        <div class="logo"></div>
+        <div class="menu">
+            <a href="#banner" target="_self" class="cur">首页</a><a href="#solution" target="_self">解决方案</a><a href="#product"
+                                                                                                             target="_self">产品中心</a><a
+                href="#application" target="_self">应用场景</a><a href="#joinus" target="_self">合作加盟</a><a href="#aboutus"
+                                                                                                       target="_self">关于我们</a>
+        </div>
+    </div>
+</div>
+
+<!--wrapbox LOGO -->
+<div class="banner" id="banner"></div>
+<div class="main">
+    <div class="application_list animation-layer" id="application_list">
+        <div class="cont">
+            <dl>
+                <dt class="application_list-img"><img src="images/gywm.jpg"/></dt>
+                <dd class="application_list-tit"><b>应用场景-标题</b></dd>
+                <dd class="application_list-con">应用场景标题内容应用场景标题内容应用场景标题内容应用场景标题内容应用场景标题内容</dd>
+            </dl>
+        </div>
+        <!-- cont-->
+        <div class="images"  >
+        	<li class="images-img1 product">
+                <div class="product-hover">
+                    <p class="title">资源回收</p>
+                    <p class="con">再生资源回收以物资不断循环利用的经济发展模式，目前正在成为全球潮流。可持续发展的战略，得到大家一致同意。可持续发展就是，既符合当代人类的需求，又不致损害后代人满足其需求能力的发展，是我们在注意经济增长的数量，同时要注意追求经济增长的质量。主要的标志是资源能够永远利用，保持良好的生态环境。</p>
+                </div>
+                <div class="product-img">
+                    <img src="images/cp (1).jpg"/>
+                </div>
+            </li>
+       	    <li class="images-img2 product">
+                <div class="product-hover">
+                    <p class="title">资源回收</p>
+                    <p class="con">再生资源回收以物资不断循环利用的经济发展模式，目前正在成为全球潮流。可持续发展的战略，得到大家一致同意。可持续发展就是，既符合当代人类的需求，又不致损害后代人满足其需求能力的发展，是我们在注意经济增长的数量，同时要注意追求经济增长的质量。主要的标志是资源能够永远利用，保持良好的生态环境。</p>
+                </div>
+                <div class="product-img">
+                    <img src="images/cp (2).jpg"/>
+                </div>
+            </li>
+        	<li class="images-img1 product">
+                <div class="product-hover">
+                    <p class="title">资源回收</p>
+                    <p class="con">再生资源回收以物资不断循环利用的经济发展模式，目前正在成为全球潮流。可持续发展的战略，得到大家一致同意。可持续发展就是，既符合当代人类的需求，又不致损害后代人满足其需求能力的发展，是我们在注意经济增长的数量，同时要注意追求经济增长的质量。主要的标志是资源能够永远利用，保持良好的生态环境。</p>
+                </div>
+                <div class="product-img">
+                    <img src="images/cp (3).jpg"/>
+                </div>
+            </li>
+       	    <li class="images-img2 product">
+                <div class="product-hover">
+                    <p class="title">资源回收</p>
+                    <p class="con">再生资源回收以物资不断循环利用的经济发展模式，目前正在成为全球潮流。可持续发展的战略，得到大家一致同意。可持续发展就是，既符合当代人类的需求，又不致损害后代人满足其需求能力的发展，是我们在注意经济增长的数量，同时要注意追求经济增长的质量。主要的标志是资源能够永远利用，保持良好的生态环境。</p>
+                </div>
+                <div class="product-img">
+                    <img src="images/cp (1).jpg"/>
+                </div>
+            </li>
+        </div>
+    </div>
+    <!--application_list 应用场景列表页  -->
+
+    <div class="height20"></div>
+    <div class="height20"></div>
+    <div class="foot">
+        <div class="wrapbox">
+            <div class="fl">
+                <p>公司名称：青海天纵科技有限公司</p>
+                <p>公司地址：青海省西宁市城北区</p>
+                <p>联系电话：0971-22938211</p>
+                <p>邮箱：1111@qq.com</p>
+            </div>
+            <div class="fr"><img src="images/ewm.jpg"/></div>
+        </div>
+        <div class="copyright">Copyright © 2017-2018,www.xxxxx.com,All rights reserved版权所有 © 您的网站名称 Powered by</div>
+    </div>
+    <!--foot end -->
+</div>
+<!--main end -->
+<script type="text/javascript">
+    $(".product").mouseenter(function () {
+    }).mouseleave(function () {
+
+    });
+    $(function () {
+        $(".animation-layer").mouseover(function () {
+            $(this).addClass("animation-active");
+        });
+    });
+</script>
+</body>
+</html>

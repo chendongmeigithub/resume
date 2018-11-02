@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>天地图</title>
+  <style>
+    body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .bayonet-info {
+      position: relative;
+      z-index: 1000;
+      width: 908px;
+      height: 235px;
+      background: #ffffff;
+    }
+
+    .bayonet-img {
+      position: relative;
+      width: 418px;
+      height: 235px;
+      float: left;
+      overflow: hidden;
+    }
+
+    .bayonet-img img {
+      width: 100%;
+    }
+
+    .bayonet-lfet {
+      position: relative;
+      width: 245px;
+      height: 235px;
+      float: left;
+    }
+
+    .bayonet-right {
+      position: relative;
+      width: 245px;
+      height: 235px;
+      float: right;
+    }
+
+    .title {
+      position: relative;
+      width: 100%;
+      height: 33px;
+      line-height: 33px;
+      font-size: 12px;
+      background: #5c89cb;
+      color: #ffffff;
+      padding-left: 18px;
+      box-sizing: border-box;
+      text-indent: 30px;
+    }
+
+    .bayonet-title {
+      background-image: url("./mapIcon/map-bayonet.png");
+      background-size: 25px 25px;
+      background-position: 15px center;
+      background-repeat: no-repeat;
+    }
+
+    .alarm-title {
+      border-left: 1px solid #ffffff;
+      background-image: url("./mapIcon/map-camera.png");
+      background-size: 25px 25px;
+      background-position: 15px center;
+      background-repeat: no-repeat;
+    }
+
+    .bayonet-list {
+      position: relative;
+      width: 100%;
+      padding-top: 9px;
+    }
+
+    .bayonet-list div {
+      position: relative;
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      padding-left: 9px;
+      box-sizing: border-box;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bayonet-list .camera-name {
+      cursor: pointer;
+    }
+
+    .bayonet-close {
+      position: absolute;
+      width: 33px;
+      height: 33px;
+      line-height: 33px;
+      text-align: center;
+      top: 0;
+      right: 0;
+      padding: 5px;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .bayonet-close img {
+      width: 100%;
+    }
+
+    /*选中摄像头*/
+    .select-camera {
+      position: absolute;
+      width: 246px;
+      min-height: 120px;
+      display: flex;
+      justify-content: flex-start;
+      z-index: 3000;
+    }
+
+    .select-camera .select-right {
+      width: 246px;
+      padding: 9px 16px;
+      box-sizing: border-box;
+      margin-top: 20px;
+      border: 1px solid #ececec;
+      background: #ffffff;
+    }
+
+    .select-camera .select-right .select-item {
+      position: relative;
+      width: 100%;
+      height: 33px;
+      line-height: 33px;
+    }
+
+    .select-camera .select-right .select-item .item-name {
+      float: left;
+      width: 145px;
+      height: 33px;
+      padding-left: 33px;
+      background: url("./mapIcon/camera-1.png") left center no-repeat;
+      background-size: 30px 28px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .select-camera .select-right .select-item .item-close {
+      float: right;
+      width: 33px;
+      height: 33px;
+      background: url("./mapIcon/close-1.png") right center no-repeat;
+      background-size: 14px 14px;
+      cursor: pointer;
+    }
+
+    .select-camera .select-right .select-item .img-box {
+      position: absolute;
+      width: 236px;
+      height: 104px;
+      background: url("./mapIcon/box.png") center center no-repeat;
+      top: -28px;
+      left: -233px;
+      display: none;
+    }
+
+    .select-camera .select-right .select-item .img-box .box {
+      position: relative;
+      margin: 9px 8px;
+      width: 144px;
+      height: 88px;
+    }
+
+    .select-camera .select-right .select-item.active .item-name {
+      background: url("./mapIcon/camera-2.png") left center no-repeat;
+      background-size: 30px 28px;
+    }
+
+    .select-camera .select-right .select-item.active .item-close {
+      background: url("./mapIcon/close-2.png") right center no-repeat;
+      background-size: 14px 14px;
+    }
+
+    .select-camera .select-right .select-item.active .img-box {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<div id="mapDiv" style="position:absolute;width:100%; height:100%;font-size: 14px">
+</div>
+<script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://api.tianditu.com/js/maps.js" type="text/javascript"></script>
+<script src="http://api.tianditu.com/js/service.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://api.tianditu.com/js/maptools.js"></script>
+<script>
+  var urlTrack = 'http://192.168.1.220:8180';
+  var map;
+  var zoom = 10;
+  var customerWinInfo = null;
+  var markerClusterer;
+  var bayonetList = [];
+  var cameraList = [];
+  var selectCameraList = [];
+  var rectTool;
+  var resultList = [
+    {
+      "picture_uri": "http://192.168.1.220:7300/storage/v1/image?uri_base64=bm9ybWFsOi8vNTEvMjAxNzA2MzAvV1BWMytkdytObjBSZ1c4YW9lelNOQT09QDE=",
+      "camera_name": "NSJ开发摄像头1",
+      "rec_age_range": -1,
+      "face_image_id_str": "14355223812244482",
+      "rec_uygur": -1,
+      "is_writable": false,
+      "camera_id": 34,
+      "is_hit": false,
+      "rec_fringe": -1,
+      "face_image_uri": "http://192.168.1.220:7300/storage/v1/image?uri_base64=bm9ybWFsOi8vNTEvMjAxNzA2MzAvc3p1KzF2ajc2ZGF5b3MwNXlVeGt2QT09QDE=",
+      "repository_id": 50,
+      "timestamp": 1498799953,
+      "timestamp_end": 1498799954,
+      "face_image_id": 14355223812244482,
+      "rec_gender": -1,
+      "timestamp_begin": 1498799953,
+      "rec_glasses": -1
+    },
+    {
+      "picture_uri": "http://192.168.1.220:7300/storage/v1/image?uri_base64=bm9ybWFsOi8vNTEvMjAxNzA2MzAvcHY3NjIzbEs4N21YSzVNUjNJYjY0dz09QDE=",
+      "camera_name": "NSJ开发摄像头2",
+      "rec_age_range": -1,
+      "face_image_id_str": "14355223812244481",
+      "rec_uygur": -1,
+      "is_writable": false,
+      "camera_id": 34,
+      "is_hit": false,
+      "rec_fringe": -1,
+      "face_image_uri": "http://192.168.1.220:7300/storage/v1/image?uri_base64=bm9ybWFsOi8vNTEvMjAxNzA2MzAvbEs1ZWJ6RHhidUtCTE9lVGdwN2JJUT09QDE=",
+      "repository_id": 51,
+      "timestamp": 1498799953,
+      "timestamp_end": 1498799953,
+      "face_image_id": 14355223812244480,
+      "rec_gender": -1,
+      "timestamp_begin": 1498799953,
+      "rec_glasses": -1
+    },
+    {
+      "picture_uri": "http://192.168.1.220:7300/storage/v1/image?uri_base64=bm9ybWFsOi8vNTEvMjAxNzA2MzAvcHY3NjIzbEs4N21YSzVNUjNJYjY0dz09QDE=",
+      "camera_name": "NSJ开发摄像头3",
+      "rec_age_range": -1,
+      "face_image_id_str": "14355223812244481",
+      "rec_uygur": -1,
+      "is_writable": false,
+      "camera_id": 34,
+      "is_hit": false,
+      "rec_fringe": -1,
+      "face_image_uri": "http://192.168.1.220:7300/storage/v1/image?uri_base64=bm9ybWFsOi8vNTEvMjAxNzA2MzAvbEs1ZWJ6RHhidUtCTE9lVGdwN2JJUT09QDE=",
+      "repository_id": 50,
+      "timestamp": 1498799953,
+      "timestamp_end": 1498799953,
+      "face_image_id": 14355223812244480,
+      "rec_gender": -1,
+      "timestamp_begin": 1498799953,
+      "rec_glasses": -1
+    }
+  ];
+
+  $(function () {
+    $.ajax({
+      type: "get",
+      url: urlTrack + "/resource/getCamera",
+      dataType: "json",
+      headers: {
+        "Accept": "application/json; charset=utf-8",
+        "session_id": "123123"
+      },
+      data: {},
+      success: function (data) {
+        if (data.rtn === 0) {
+          for (var i = 0; i < data.data.length; i++) { // 城市
+            for (var x = 0; x < data.data[i].childNode.length; x++) { // 小区
+              for (var y = 0; y < data.data[i].childNode[x].childNode.length; y++) { // 卡口
+                if (data.data[i].childNode[x].childNode[y].objectType === 'bayonet') {
+                  var bayonetItem = {};
+                  bayonetItem = data.data[i].childNode[x].childNode[y];
+                  // 处理摄像头小区信息
+                  bayonetItem.communityId = data.data[i].childNode[x].id;
+                  bayonetItem.communityName = data.data[i].childNode[x].name;
+                  bayonetList.push(bayonetItem);
+                }
+                for (var z = 0; z < data.data[i].childNode[x].childNode[y].childNode.length; z++) { // 摄像头
+                  var cameraItem = {};
+                  if (data.data[i].childNode[x].childNode[y].childNode[z].objectType === 'camera') {
+                    cameraItem = data.data[i].childNode[x].childNode[y].childNode[z];
+                    // 处理摄像头卡口信息
+                    cameraItem.bayonetId = data.data[i].childNode[x].childNode[y].id;
+                    cameraItem.bayonetName = data.data[i].childNode[x].childNode[y].name;
+                    cameraItem.lat = data.data[i].childNode[x].childNode[y].lat;
+                    cameraItem.lng = data.data[i].childNode[x].childNode[y].lng;
+                    // 处理摄像头小区信息
+                    cameraItem.communityId = data.data[i].childNode[x].id;
+                    cameraItem.communityName = data.data[i].childNode[x].name;
+                    cameraList.push(cameraItem);
+                  }
+                }
+              }
+            }
+          }
+          drawBayonet(bayonetList);
+//          setTimeout(function (){
+//            drawTrack(resultList);
+//          },3000)
+        }
+      }
+    });
+  });
+
+  // 绘制卡口信息
+  function drawBayonet(markerList) {
+    map = new TMap("mapDiv");
+    if (markerList.length > 0) {
+      map.centerAndZoom(new TLngLat(markerList[0].lng, markerList[0].lat), zoom);
+      var arrayObj = new Array();
+      for (var i = 0; i < markerList.length; i++) {
+        var marker = addBayonetMarker(markerList[i], i);
+        arrayObj.push(marker);
+      }
+      var markers = new TMarkerClusterer(map, {markers: arrayObj});
+      markerClusterer = markers;
+    } else {
+      map.centerAndZoom(new TLngLat(120.77864, 31.31153), zoom);
+    }
+    map.enableHandleMouseScroll();
+    //启用连续缩放效果
+    map.enableContinuousZoom();
+    initDrewRect();
+  }
+
+  // 框选卡口功能
+  function initDrewRect() {
+    var config = {
+      strokeColor: "red",  //折线颜色
+      fillColor: "#FFFFFF",    //填充颜色。当参数为空时，折线覆盖物将没有填充效果
+      strokeWeight: "2px", //折线的宽度，以像素为单位
+      opacity: 0.4,    //折线的透明度，取值范围0 - 1
+      strokeStyle: "solid" //折线的样式，solid或dashed
+    };
+    //创建矩形工具对象
+    rectTool = new TRectTool(map, config);
+    rectTool.open();
+
+    //注册矩形工具绘制完成后的事件
+    TEvent.addListener(rectTool, "draw", onDrawRect);
+  }
+
+  // 地图框选后添加样式设置
+  function onDrawRect(bounds) {
+    var config = {
+      strokeColor: "#5c89cb",  //折线颜色
+      fillColor: "rgba(70, 155, 222, 0.41)",    //填充颜色。当参数为空时，折线覆盖物将没有填充效果
+      strokeWeight: "2px", //折线的宽度，以像素为单位
+      opacity: 1,    //折线的透明度，取值范围0 - 1
+      strokeStyle: "solid" //折线的样式，solid或dashed
+    };
+    getSelectList(bounds.XmaxNTU, bounds.YmaxNTU, bounds.XminNTU, bounds.YminNTU);
+    rect = new TRect(bounds, config);
+    map.addOverLay(rect);
+    // rectTool.close();
+  }
+
+  // 获取框选区域摄像头
+  function getSelectList(XmaxNTU, YmaxNTU, XminNTU, YminNTU) {
+    var status = true;
+    for (var i = 0; i < cameraList.length; i++) {
+      if ((cameraList[i].lng <= XmaxNTU) && (cameraList[i].lat <= YmaxNTU) && (cameraList[i].lng >= XminNTU) && (cameraList[i].lat >= YminNTU)) {
+        status = true;
+        for (var x = 0; x < selectCameraList.length; x++) {
+          if (cameraList[i].history_repository_id === selectCameraList[x]) {
+            status = false;
+            break;
+          }
+        }
+        if (status) {
+          selectCameraList.push(cameraList[i].history_repository_id);
+        }
+      }
+    }
+
+    if (1) {
+      localStorage.setItem('gisSelectCamera', JSON.stringify(selectCameraList));
+      drewSelectMarker(selectCameraList, YmaxNTU, XminNTU, YminNTU);
+    }
+  }
+
+  function drewSelectMarker(selectCameraListId, YmaxNTU, XminNTU, YminNTU) {
+    map.removeOverLay(customerWinInfo);
+    if (selectCameraListId.length > 0) {
+      var html = [],
+        item;
+      html.push("<div id=\'selectCamera\' class=\'select-camera\'>");
+      html.push("  <div class=\'select-right\'>");
+      for (var i = 0; i < selectCameraListId.length; i++) {
+        item = getCameraInfo(selectCameraListId[i]);
+        html.push("    <div class=\'select-item\'><div class=\'item-name\'>" + item.name + "</div><div class=\'item-close\' onclick=\'removeCamera(event, " + JSON.stringify(item) + " )\' ></div><div class=\'img-box\'><div class=\'box\'></div></div></div>");
+      }
+      html.push("  </div>");
+      html.push("</div>");
+
+      var config = {
+        offset: new TPixel(0, 0),
+        position: new TLngLat(XminNTU, YmaxNTU)
+      };
+      customerWinInfo = new TLabel(config);
+      customerWinInfo.setTitle('');
+      customerWinInfo.setLabel(html.join(''));
+      customerWinInfo.getObject().style.zIndex = 10000;
+      map.addOverLay(customerWinInfo);
+      var pixel = new TPixel(-260, -20);
+      customerWinInfo.setOffset(pixel);
+      customerWinInfo.setBorderLine(0);
+    }
+  }
+
+  function removeCamera(event, removeCamera) {
+    var gisList = localStorage.getItem('gisSelectCamera');
+    gisList = JSON.parse(gisList);
+    var gisSelectCamera = [];
+    for (var i = 0; i < gisList.length; i++) {
+      if (gisList[i] !== removeCamera.history_repository_id) {
+        gisSelectCamera.push(gisList[i]);
+      }
+    }
+    $(event.target).parent().remove();
+    if(gisSelectCamera.length === 0) {
+      $("#selectCamera").remove();
+    }
+
+    localStorage.setItem('gisSelectCamera', JSON.stringify(gisSelectCamera));
+  }
+
+  // 单击卡口图标
+  function addBayonetMarker(cameraItem, num) {
+    var marker, icon;
+    icon = new TIcon("./mapIcon/map-bayonet.png", new TSize(32, 32), {anchor: new TPixel(9, 27)});
+    marker = new TMarker(new TLngLat(cameraItem.lng, cameraItem.lat), {icon: icon});
+    map.addOverLay(marker);
+    TEvent.addListener(marker, "click", function (point, btn) {
+      bayonetClick(point, btn, cameraItem);
+    });
+    return marker;
+  }
+
+  // 绘制卡口信息
+  function bayonetClick(point, btn, lngLat) {
+    map.removeOverLay(customerWinInfo);
+    rectTool.close();
+    if (lngLat.childNode.length > 0) {
+      changeCamera(lngLat.childNode[0]);
+    }
+    var html = [];
+    html.push("<div id=\'bayonetInfo\' class=\'bayonet-info\'>");
+    html.push("  <div class=\'bayonet-img\' id=\'bayonetImg\'>");
+    // html.push("    <img src=\'./mapIcon/3.png\' alt=\'\'>");
+    html.push("  </div>");
+    html.push("  <div class=\'bayonet-lfet\'>");
+    html.push("    <div class=\'title bayonet-title\'>卡口信息</div>");
+    html.push("    <div class=\'bayonet-list\'>");
+    html.push("      <div>所属小区：" + lngLat.communityName + "</div>");
+    html.push("      <div>卡口名称：" + lngLat.name + "</div>");
+    html.push("    </div>");
+    html.push("    <div class=\'title\'>特征信息</div>");
+    html.push("    <div id=\'trait\' class=\'bayonet-list\'>");
+    // html.push("      <div>性别：女</div>");
+    // html.push("      <div>年龄：青年</div>");
+    // html.push("      <div>眼镜：未知</div>");
+    html.push("    </div>");
+    html.push("  </div>");
+    html.push("  <div class=\'bayonet-right\'>");
+    html.push("    <div class=\'title alarm-title\'>摄像头列表</div>");
+    html.push("    <div class=\'bayonet-list\'>");
+
+    for (var i = 0; i < lngLat.childNode.length; i++) {
+      html.push("      <div class=\'camera-name\' onclick=\'changeCamera( " + JSON.stringify(lngLat.childNode[i]) + " )\'>" + lngLat.childNode[i].name + "</div>");
+    }
+
+    html.push("    </div>");
+    html.push("  </div>");
+    html.push("  <div class=\'bayonet-close\' onclick=\'bayonetClose();\'>");
+    html.push("    <img src=\'./mapIcon/close.png\' alt=\'\'>");
+    html.push("  </div>");
+    html.push("</div>");
+
+    var config = {
+      offset: new TPixel(0, 0),
+      position: new TLngLat(lngLat.lng, lngLat.lat)
+    };
+    customerWinInfo = new TLabel(config);
+    customerWinInfo.setTitle('');
+    customerWinInfo.setLabel(html.join(''));
+    customerWinInfo.getObject().style.zIndex = 10000;
+    map.addOverLay(customerWinInfo);
+    var pixel = new TPixel(-450, -150);
+    customerWinInfo.setOffset(pixel);
+    customerWinInfo.setBorderLine(0);
+  }
+
+  function bayonetClose() {
+    map.removeOverLay(customerWinInfo);
+    rectTool.open();
+  }
+
+  function changeCamera(childNode) {
+    var parms = {
+      "condition": {
+        "repository_id": {
+          "$in": []
+        }
+      }
+    };
+    parms.condition.repository_id.$in.push(childNode.history_repository_id);
+    $.ajax({
+      type: "post",
+      url: urlTrack + "/monitoring/capture",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      headers: {
+        "session_id": "123123"
+      },
+      data: JSON.stringify(parms),
+      success: function (data) {
+        if ((data.rtn === 0) && (data.results.length > 0)) {
+          document.getElementById('bayonetImg').innerHTML = "<img src='" + data.results[0].picture_uri + "' />";
+          var sex = '未知',
+            age = '未知',
+            glasses = '未知';
+          switch (data.results[0].rec_gender) {
+            case 0:
+              age = '未知';
+              break;
+            case 1:
+              age = '男';
+              break;
+            case 2:
+              age = '女';
+              break;
+          }
+          switch (data.results[0].rec_age_range) {
+            case 0:
+              age = '小孩';
+              break;
+            case 1:
+              age = '青年';
+              break;
+            case 2:
+              age = '中年';
+              break;
+            case 3:
+              age = '老年';
+              break;
+            case -0:
+              age = '未知';
+              break;
+          }
+          switch (data.results[0].rec_glasses) {
+            case 0:
+              glasses = '不戴眼镜';
+              break;
+            case 1:
+              glasses = '戴眼镜';
+              break;
+            case 2:
+              glasses = '太阳镜';
+              break;
+            case -0:
+              glasses = '未知';
+              break;
+          }
+          document.getElementById('trait').innerHTML = "<div>性别：" + sex + "</div><div>年龄：" + age + "</div><div>眼镜：" + glasses + "</div>";
+        }
+      }
+    });
+  }
+
+  // 获取时间时分
+  function ling(value) {
+    var timestamp = parseInt(value);
+    var day = new Date(timestamp * 1000),
+      Year = 0,
+      Month = 0,
+      Day = 0,
+      CurrentDate = '',
+      h = day.getHours(),
+      m = day.getMinutes(),
+      s = day.getSeconds();
+    // 初始化时间
+    Year = day.getFullYear();
+    Month = day.getMonth() + 1;
+    Day = day.getDate();
+    CurrentDate += Year + '-';
+    if (Month >= 10) {
+      CurrentDate += Month + '-';
+    } else {
+      CurrentDate += '0' + Month + '-';
+    }
+    if (Day >= 10) {
+      CurrentDate += Day + '';
+    } else {
+      CurrentDate += '0' + Day + '';
+    }
+    if (h >= 10) {
+      CurrentDate += ' ' + h + ':';
+    } else {
+      CurrentDate += '0' + h + ':';
+    }
+    if (m >= 10) {
+      CurrentDate += m + ':';
+    } else {
+      CurrentDate += '0' + m + ':';
+    }
+    if (s >= 10) {
+      CurrentDate += s;
+    } else {
+      CurrentDate += '0' + s;
+    }
+    return CurrentDate;
+  }
+
+  // 绘制路人轨迹
+  function drawTrack(result) {
+    resultList = result;
+    var startLngLat,
+      endLngLat,
+      resultLength = resultList.length;
+
+    for (var i = 0; i < resultList.length; i++) {
+      resultList[i].otherInfo = getCameraInfo(resultList[i].repository_id);
+    }
+
+    //清除所有覆盖物
+    markerClusterer.clearMarkers();
+    map.clearOverLays();
+    rectTool.close();
+
+    if (resultList.length > 1) {
+      //创建公交搜索对象
+      var config = {
+        policy: 0,	//驾车策略
+        onSearchComplete: searchResult	//检索完成后的回调函数
+      };
+
+      drivingRoute = new TDrivingRoute(map, config);
+
+      //设置轨迹
+      drivingRoute.setPolicy(3);
+      for (var i = 0; i < (resultList.length - 1); i++) {
+        //起点经纬度
+        startLngLat = new TLngLat(resultList[i].otherInfo.lng, resultList[i].otherInfo.lat);
+        //终点经纬度
+        endLngLat = new TLngLat(resultList[i + 1].otherInfo.lng, resultList[i + 1].otherInfo.lat);
+        drivingRoute.search(startLngLat, endLngLat);
+
+        drewTrackMarker(resultList[i], i);
+      }
+      drewTrackMarker(resultList[resultLength - 1], resultLength - 1);
+    }
+
+    if (resultList.length === 1) {
+      drewTrackMarker(resultList[0], 0)
+    }
+  }
+
+  /**
+   *
+   * @description  路人轨迹marker
+   * @param lngLat 经纬度信息
+   * @param item    路人信息
+   * @param num    标志
+   */
+  function drewTrackMarker(item, num) {
+    var marker, icon;
+    //创建图片对象
+    icon = new TIcon("./mapIcon/map-bayonet.png", new TSize(24, 32), {anchor: new TPixel(9, 27)});
+
+    marker = new TMarker(new TLngLat(item.otherInfo.lng, item.otherInfo.lat), {icon: icon});
+    map.addOverLay(marker);
+    TEvent.addListener(marker, "click", function (point, btn) {
+      trackClick(point, btn, item);
+    });
+  }
+
+  function trackClick(point, btn, item) {
+    var childList = getCameraList(item.otherInfo.bayonetId);
+
+    map.removeOverLay(customerWinInfo);
+    rectTool.close();
+
+    if (childList.length > 0) {
+      changeTrack(childList[0]);
+    }
+    var html = [];
+    html.push("<div id=\'bayonetInfo\' class=\'bayonet-info\'>");
+    html.push("  <div class=\'bayonet-img\' id=\'bayonetImg\'>");
+    // html.push("    <img src=\'./mapIcon/3.png\' alt=\'\'>");
+    html.push("  </div>");
+    html.push("  <div class=\'bayonet-lfet\'>");
+    html.push("    <div class=\'title bayonet-title\'>卡口信息</div>");
+    html.push("    <div class=\'bayonet-list\'>");
+    html.push("      <div>所属小区：" + childList[0].otherInfo.communityName + "</div>");
+    html.push("      <div>卡口名称：" + childList[0].otherInfo.bayonetName + "</div>");
+    html.push("    </div>");
+    html.push("    <div class=\'title\'>特征信息</div>");
+    html.push("    <div id=\'trait\' class=\'bayonet-list\'>");
+    // html.push("      <div>性别：女</div>");
+    // html.push("      <div>年龄：青年</div>");
+    // html.push("      <div>眼镜：未知</div>");
+    html.push("    </div>");
+    html.push("  </div>");
+    html.push("  <div class=\'bayonet-right\'>");
+    html.push("    <div class=\'title alarm-title\'>摄像头列表</div>");
+    html.push("    <div class=\'bayonet-list\'>");
+
+    for (var i = 0; i < childList.length; i++) {
+      html.push("      <div class=\'camera-name\' onclick=\'changeTrack( " + JSON.stringify(childList[i]) + " )\'>" + childList[i].camera_name + "</div>");
+    }
+
+    html.push("    </div>");
+    html.push("  </div>");
+    html.push("  <div class=\'bayonet-close\' onclick=\'bayonetClose();\'>");
+    html.push("    <img src=\'./mapIcon/close.png\' alt=\'\'>");
+    html.push("  </div>");
+    html.push("</div>");
+
+    var config = {
+      offset: new TPixel(0, 0),
+      position: new TLngLat(item.otherInfo.lng, item.otherInfo.lat)
+    };
+    customerWinInfo = new TLabel(config);
+    customerWinInfo.setTitle('');
+    customerWinInfo.setLabel(html.join(''));
+    customerWinInfo.getObject().style.zIndex = 10000;
+    map.addOverLay(customerWinInfo);
+    var pixel = new TPixel(-450, -150);
+    customerWinInfo.setOffset(pixel);
+    customerWinInfo.setBorderLine(0);
+  }
+
+  //显示公交搜索结果
+  function searchResult(result) {
+    //获取方案个数
+    var routes = result.getNumPlans();
+    for (var i = 0; i < routes; i++) {
+      //获得单条驾车方案结果对象
+      var plan = result.getPlan(i);
+      // //显示驾车线路
+      createRoute(plan.getPath());
+      //显示最佳级别
+      map.setViewport(plan.getPath());
+    }
+  }
+
+  //绘制线路
+  function createRoute(lnglats, lineColor) {
+    var line = new TPolyline(lnglats, {
+      strokeColor: "#f11e00",
+      strokeWeight: 5,
+      strokeOpacity: 0.9,
+      strokeStyle: 'dashed'
+    });
+    //向地图上添加线
+    map.addOverLay(line);
+  }
+
+  function changeTrack(childNode) {
+    var parms = {"imageId": childNode.face_image_id_str, limit: 1};
+    $.ajax({
+      type: "post",
+      url: urlTrack + "/face/v1/face_image/query",
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      headers: {
+        "session_id": "123123"
+      },
+      data: JSON.stringify(parms),
+      success: function (data) {
+        if ((data.rtn === 0) && (data.results.length > 0)) {
+          document.getElementById('bayonetImg').innerHTML = "<img src='" + data.results[0].picture_uri + "' />";
+          var sex = '未知',
+            age = '未知',
+            glasses = '未知';
+          switch (data.results[0].rec_gender) {
+            case 0:
+              age = '未知';
+              break;
+            case 1:
+              age = '男';
+              break;
+            case 2:
+              age = '女';
+              break;
+          }
+          switch (data.results[0].rec_age_range) {
+            case 0:
+              age = '小孩';
+              break;
+            case 1:
+              age = '青年';
+              break;
+            case 2:
+              age = '中年';
+              break;
+            case 3:
+              age = '老年';
+              break;
+            case -0:
+              age = '未知';
+              break;
+          }
+          switch (data.results[0].rec_glasses) {
+            case 0:
+              glasses = '不戴眼镜';
+              break;
+            case 1:
+              glasses = '戴眼镜';
+              break;
+            case 2:
+              glasses = '太阳镜';
+              break;
+            case -0:
+              glasses = '未知';
+              break;
+          }
+          document.getElementById('trait').innerHTML = "<div>性别：" + sex + "</div><div>年龄：" + age + "</div><div>眼镜：" + glasses + "</div>";
+        }
+      }
+    });
+  }
+
+  // 重置地图
+  function resetMap() {
+    selectCameraList = [];
+    drawBayonet(bayonetList);
+  }
+
+  function getCameraInfo(id) {
+    for (var i = 0; i < cameraList.length; i++) {
+      if (cameraList[i].history_repository_id === id) {
+        return cameraList[i];
+        break;
+      }
+    }
+  }
+
+  function getCameraList(id) {
+    var list = [];
+    for (var i = 0; i < resultList.length; i++) {
+      if (resultList[i].otherInfo.bayonetId === id) {
+        list.push(resultList[i]);
+      }
+    }
+    return list;
+  }
+</script>
+</body>
+</html>
